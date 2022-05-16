@@ -2,7 +2,7 @@ function Loader() {
   let index = 0;
   let frames = ["|", "/", "-", "\\"];
 
-  this.execute;
+  this.snippet;
   this.callback;
 
   const animation = () => {
@@ -22,22 +22,23 @@ function Loader() {
     setTimeout(() => {
       clearInterval(interval);
       console.clear();
-      this.execute = this.callback(name, ...arg);
+      this.snippet = this.callback(name, ...arg);
     }, 3000);
   }
 }
 
 function EasterEggs(nameGame, ...arg) {
   const loader = new Loader();
-  loader.callback = function (nameGame, ...arg) {
+  loader.callback = (nameGame, ...arg) => {
     switch (nameGame) {
       case "clock":
         return Clock();
       case "marquee":
         return Marquee(...arg);
+      case "number formatter":
+        return NumberFormatter(...arg);
       default:
         console.log("Not found game");
-
     }
   }
 
@@ -85,3 +86,15 @@ function Marquee(phrase, size) {
   }, 1000)
 }
 
+function NumberFormatter(base, ...arg) {
+  let resp;
+  return (number) => {
+    if (number < base) { resp = `${number}${arg[0][0]}` }
+    if (number > base) {
+      number = Math.trunc(number / base);
+      resp = `${number}${arg[0][1]}`;
+    }
+
+    console.log(resp);
+  }
+}
